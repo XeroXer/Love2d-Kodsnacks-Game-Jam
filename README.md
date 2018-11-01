@@ -11,9 +11,11 @@ Efter de två veckorna har alla en vecka på sig att testa varandras spel.
 ## Regler ##
 
 **Spelet måste innehålla följande**
+
 - Mustach
 
 **Spelat måste innehålla ett och endast ett av följande**
+
 - Plattformar
 - Räcerelement
 - Spelen ska vara gjorda med motorn Love2d https://love2d.org/
