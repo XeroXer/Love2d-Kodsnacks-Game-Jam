@@ -28,3 +28,5 @@ Efter de två veckorna har alla en vecka på sig att testa varandras spel.
 - Spelet bör vara så litet som möjligt, och bygg gärna spelet på ett sådant sätt att det fungerar vid slutet av varje dag.
 
 https://itch.io/jam/kodsnacks-2veckorssylt
+
+`zip -9 -r Love2d-Kodsnacks-Game-Jam.love . -x '*.git/*' 'README.md'`
