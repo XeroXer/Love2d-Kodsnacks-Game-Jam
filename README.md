@@ -29,4 +29,4 @@ Efter de två veckorna har alla en vecka på sig att testa varandras spel.
 
 https://itch.io/jam/kodsnacks-2veckorssylt
 
-`zip -9 -r Love2d-Kodsnacks-Game-Jam.love . -x '*.git/*' 'README.md'`
+`zip -9 -r ./bin/Love2d-Kodsnacks-Game-Jam.love . -x '*.git/*' '*bin/*'`
