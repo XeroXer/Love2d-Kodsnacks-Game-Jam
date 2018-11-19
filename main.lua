@@ -203,7 +203,7 @@ function love.update(dt)
             table.remove(bullets, i)
         else
             -- remove bullets that collide with platforms
-            for i, platform in ipairs(platforms) do
+            for j, platform in ipairs(platforms) do
                 if CheckCollision(bullet.x, bullet.y, bulletConf.img:getWidth(), bulletConf.img:getHeight(), platform.x, platform.y, (platformImg:getWidth() * platform.c), platformImg:getHeight()) then
                     table.remove(bullets, i)
                 end
@@ -272,5 +272,9 @@ function love.draw(dt)
             {0, 0, 0},
             'BULL.: ' .. tostring(table.getn(bullets))
         }, 0, 36)
+        love.graphics.print({
+            {0, 0, 0},
+            'PLAT.: ' .. tostring(table.getn(platforms))
+        }, 0, 48)
     end
 end
