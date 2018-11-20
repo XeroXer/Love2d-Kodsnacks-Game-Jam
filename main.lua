@@ -6,8 +6,8 @@ bgTile = nil
 -- Player array
 player = {
     img = nil,
-    x = 20,
-    y = 20,
+    x = nil,
+    y = nil,
     speed = 250,
     rotate = false,
 }
@@ -17,7 +17,7 @@ bulletConf = {
     img = nil,
     timeBetween = 0.3,
     timer = nil,
-    speed = 300,
+    speed = 500,
 }
 bulletConf.timer = bulletConf.timeBetween
 -- Array for bullets
