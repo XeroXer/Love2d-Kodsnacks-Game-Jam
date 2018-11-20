@@ -151,17 +151,28 @@ function love.update(dt)
 
     for i, platform in ipairs(platforms) do
         local pWidth = platformImg:getWidth() * platform.c
-        if CheckCollision(goalX, player.y, player.img:getWidth(), player.img:getHeight(), platform.x, platform.y, pWidth, platformImg:getHeight())
-            or goalX < 0
-            or goalX > (love.graphics.getWidth() - player.img:getWidth())
-        then
-            goalX = currX
+        if goalX < 0 then
+            goalX = 0
+        elseif goalX > (love.graphics.getWidth() - player.img:getWidth()) then
+            goalX = love.graphics.getWidth() - player.img:getWidth()
+        elseif CheckCollision(goalX, player.y, player.img:getWidth(), player.img:getHeight(), platform.x, platform.y, pWidth, platformImg:getHeight()) then
+            if player.rotate then
+                goalX = platform.x + pWidth
+            else
+                goalX = platform.x - player.img:getWidth()
+            end
         end
-        if CheckCollision(goalX, goalY, player.img:getWidth(), player.img:getHeight(), platform.x, platform.y, pWidth, platformImg:getHeight())
-            or goalY < 0
-            or goalY > (love.graphics.getHeight() - player.img:getHeight())
-        then
-            goalY = currY
+
+        if goalY < 0 then
+            goalY = 0
+        elseif goalY > (love.graphics.getHeight() - player.img:getHeight()) then
+            goalY = love.graphics.getHeight() - player.img:getHeight()
+        elseif CheckCollision(goalX, goalY, player.img:getWidth(), player.img:getHeight(), platform.x, platform.y, pWidth, platformImg:getHeight()) then
+            if goalY > currY then
+                goalY = platform.y - player.img:getHeight()
+            else
+                goalY = platform.y + platformImg:getHeight()
+            end
         end
     end
 
