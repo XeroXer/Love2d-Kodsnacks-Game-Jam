@@ -10,6 +10,9 @@ player = {
     y = nil,
     speed = 250,
     rotate = false,
+    gravity = 150,
+    jump = 0,
+    jumpSpeed = 1200,
 }
 
 -- Bullet configuration
@@ -135,12 +138,23 @@ function love.update(dt)
         goalX = goalX + (player.speed * dt)
     end
 
-    if love.keyboard.isDown('up') then
-        goalY = goalY - (player.speed * dt)
-    end
+    -- gravity
+    goalY = goalY + (player.gravity * dt)
 
-    if love.keyboard.isDown('down') then
-        goalY = goalY + (player.speed * dt)
+    if player.jump > 0 then
+        goalY = goalY - (player.jump * dt)
+        player.jump = player.jump - player.gravity
+    end
+    if love.keyboard.isDown('up') and goalY > currY then
+        local collision = false
+        for i, platform in ipairs(platforms) do
+            if CheckCollision(currX, goalY, player.img:getWidth(), player.img:getHeight(), platform.x, platform.y, (platformImg:getWidth() * platform.c), platformImg:getHeight()) then
+                collision = true
+            end
+        end
+        if collision then
+            player.jump = player.jumpSpeed
+        end
     end
 
     if goalX < currX then
