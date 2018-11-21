@@ -1,5 +1,3 @@
-debug = true
-
 -- Background tile
 bgTile = nil
 
@@ -29,19 +27,42 @@ bullets = {}
 -- Target array
 target = {
     img = nil,
-    x = 50,
-    y = 50,
+    x = nil,
+    y = nil,
 }
 -- Possible target locations
--- TODO: Empty from the beginning
 targetLocs = {
     {
-        x = 10,
-        y = 10,
+        x = 64,
+        y = 64,
     },
     {
-        x = 100,
-        y = 10,
+        x = 64,
+        y = 128,
+    },
+    {
+        x = 64,
+        y = 192,
+    },
+    {
+        x = 64,
+        y = 256,
+    },
+    {
+        x = 448,
+        y = 64,
+    },
+    {
+        x = 448,
+        y = 128,
+    },
+    {
+        x = 448,
+        y = 192,
+    },
+    {
+        x = 448,
+        y = 256,
     },
 }
 
@@ -124,6 +145,11 @@ function love.load()
     -- Calculate player start position
     player.x = (love.graphics.getWidth() / 2) - (player.img:getWidth() / 2)
     player.y = (love.graphics.getHeight() - platformImg:getHeight()) - player.img:getHeight()
+
+    -- Get first position of target
+    local targetPos = targetLocs[love.math.random(#targetLocs)]
+    target.x = targetPos.x
+    target.y = targetPos.y
 end
 
 function love.update(dt)
@@ -233,6 +259,16 @@ function love.update(dt)
                     table.remove(bullets, i)
                 end
             end
+
+            -- remove bullets and targets that collide with each other
+            if CheckCollision(bullet.x, bullet.y, bulletConf.img:getWidth(), bulletConf.img:getHeight(), target.x, target.y, target.img:getWidth(), target.img:getHeight()) then
+                table.remove(bullets, i)
+
+                -- Get next position of target
+                local targetPos = targetLocs[love.math.random(#targetLocs)]
+                target.x = targetPos.x
+                target.y = targetPos.y
+            end
         end
     end
 end
@@ -278,28 +314,5 @@ function love.draw(dt)
         for j = 0, (platform.c - 1) do
             love.graphics.draw(platformImg, (j * pImgW) + platform.x, platform.y)
         end
-    end
-
-    if debug then
-        love.graphics.print({
-            {0, 0, 0},
-            'FPS: ' .. tostring(love.timer.getFPS())
-        }, 0, 0)
-        love.graphics.print({
-            {0, 0, 0},
-            'WxH: ' .. tostring(love.graphics.getWidth()) .. 'x' .. tostring(love.graphics.getHeight())
-        }, 0, 12)
-        love.graphics.print({
-            {0, 0, 0},
-            'X,Y: ' .. tostring(math.floor(player.x)) .. ',' .. tostring(math.floor(player.y))
-        }, 0, 24)
-        love.graphics.print({
-            {0, 0, 0},
-            'BULL.: ' .. tostring(table.getn(bullets))
-        }, 0, 36)
-        love.graphics.print({
-            {0, 0, 0},
-            'PLAT.: ' .. tostring(table.getn(platforms))
-        }, 0, 48)
     end
 end
