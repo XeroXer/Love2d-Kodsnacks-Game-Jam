@@ -1,3 +1,5 @@
+blockSize = 32
+
 -- Background tile
 bgTile = nil
 
@@ -31,90 +33,15 @@ target = {
     y = nil,
 }
 -- Possible target locations
-targetLocs = {
-    {
-        x = 64,
-        y = 64,
-    },
-    {
-        x = 64,
-        y = 128,
-    },
-    {
-        x = 64,
-        y = 192,
-    },
-    {
-        x = 64,
-        y = 256,
-    },
-    {
-        x = 448,
-        y = 64,
-    },
-    {
-        x = 448,
-        y = 128,
-    },
-    {
-        x = 448,
-        y = 192,
-    },
-    {
-        x = 448,
-        y = 256,
-    },
-}
+targetLocs = {}
 
 -- All platform locations and lengths
 platforms = {
     -- Ground
     {
         x = 0,
-        y = 480,
-        c = 16,
-    },
-    -- Left
-    {
-        x = 64,
-        y = 416,
-        c = 3,
-    },
-    -- Middle
-    {
-        x = 208,
-        y = 352,
-        c = 3,
-    },
-    -- Right
-    {
-        x = 352,
-        y = 288,
-        c = 3,
-    },
-    -- Middle
-    {
-        x = 208,
-        y = 224,
-        c = 3,
-    },
-    -- Left
-    {
-        x = 64,
-        y = 160,
-        c = 3,
-    },
-    -- Middle
-    {
-        x = 208,
-        y = 96,
-        c = 3,
-    },
-    -- Right
-    {
-        x = 352,
-        y = 32,
-        c = 3,
+        y = (20 * blockSize),
+        c = 17,
     },
 }
 -- Platform tile
@@ -133,7 +60,7 @@ end
 
 function love.load()
     -- Set window size
-    love.window.setMode(512, 512)
+    love.window.setMode((17 * blockSize), (21 * blockSize))
 
     -- Load image assets
     bgTile = love.graphics.newImage('assets/background.png')
@@ -144,12 +71,53 @@ function love.load()
 
     -- Calculate player start position
     player.x = (love.graphics.getWidth() / 2) - (player.img:getWidth() / 2)
-    player.y = (love.graphics.getHeight() - platformImg:getHeight()) - player.img:getHeight()
+    player.y = love.graphics.getHeight() - (blockSize * 2)
+
+    -- Calculate target locations
+    j = 1
+    for i = 1, 19, 2 do
+        targetLocs[j] = {
+            x = 0,
+            y = (i * blockSize) + (blockSize / 2),
+        }
+        j = j + 1
+        targetLocs[j] = {
+            x = (16 * blockSize),
+            y = (i * blockSize) + (blockSize / 2),
+        }
+        j = j + 1
+    end
 
     -- Get first position of target
     local targetPos = targetLocs[love.math.random(#targetLocs)]
     target.x = targetPos.x
     target.y = targetPos.y
+
+    -- Calculate platform locations
+
+    local j = 2
+    for i = 2, 18, 4 do
+        platforms[j] = {
+            x = (2 * blockSize),
+            y = (i * blockSize),
+            c = 3,
+        }
+        j = j + 1
+        platforms[j] = {
+            x = (12 * blockSize),
+            y = (i * blockSize),
+            c = 3,
+        }
+        j = j + 1
+    end
+    for i = 4, 16, 4 do
+        platforms[j] = {
+            x = (7 * blockSize),
+            y = (i * blockSize),
+            c = 3,
+        }
+        j = j + 1
+    end
 end
 
 function love.update(dt)
@@ -315,4 +283,13 @@ function love.draw(dt)
             love.graphics.draw(platformImg, (j * pImgW) + platform.x, platform.y)
         end
     end
+
+    -- local debugInfos = {
+    --     'FPS: ' .. tostring(love.timer.getFPS()),
+    --     'WxH: ' .. tostring(love.graphics.getWidth()) .. 'x' .. tostring(love.graphics.getHeight()),
+    --     'WxH: ' .. tostring(love.graphics.getWidth() / blockSize) .. 'x' .. tostring(love.graphics.getHeight() / blockSize),
+    -- }
+    -- for i, debugInfo in ipairs(debugInfos) do
+    --     love.graphics.print({{1, 0, 0}, debugInfo}, 0, (i * 12) - 12)
+    -- end
 end
